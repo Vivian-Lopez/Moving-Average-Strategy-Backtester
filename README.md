@@ -88,9 +88,3 @@ They check correctness of signal output across edge cases:
 - 🧵 **Multithreading**: Apply OpenMP or Intel TBB for large vector parallelism  
 - 🧪 **Backtesting engine**: Build an event-based framework with slippage modeling  
 - 📊 **Python bridge**: Export signals to Python for matplotlib-based visualization  
-
----
-
-## 📄 License
-
-Apache 2.0 — free to use and extend.
