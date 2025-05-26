@@ -13,9 +13,9 @@ An educational and performance-aware C++ implementation of a simple momentum-bas
 This repo serves as a foundation to explore:
 
 - Implementation of fast, clean signal-generation logic in modern C++
-- Integration with Python for data and visualization (optional)
+- Integration with Python for data visualization and analysis (optional)
 - Optimization of compute bottlenecks for large-scale backtests
-- Practical demonstration of production-like code in a trading context
+- Practical demonstration of production-grade design in a trading context
 
 ---
 
@@ -27,7 +27,7 @@ The core strategy uses a **simple moving average (SMA) crossover** technique:
 - **Sell Signal (-1)**: Short MA crosses below Long MA  
 - **Hold (0)**: Otherwise
 
-All signals are generated from historical price vectors.
+Signals are generated from historical price vectors and can be used to simulate trading strategies.
 
 ---
 
@@ -72,19 +72,32 @@ make
 
 ## 🧪 Tests
 
-Unit tests are implemented with GoogleTest in `tests/strategy_test.cpp`.  
-They check correctness of signal output across edge cases:
+Unit tests in `tests/strategy_test.cpp` validate:
 
-- Rising price sequences  
-- Constant price sequences  
-- Mixed trend reversals  
+- Correct signal vector sizing and alignment
+- Proper handling of flat and rising markets
+- Signal generation at crossover points
+- Structure for backtesting tests (coming soon)
 
 ---
 
-## 🔬 Optimization Plan (Future Work)
+## 🔬 Optimization Plan
 
 - ⏱️ **Benchmarking**: Integrate [Google Benchmark](https://github.com/google/benchmark) to measure performance  
 - 🧠 **Profiling**: Use `Instruments`, `perf`, or `valgrind` to analyze hotspots  
 - 🧵 **Multithreading**: Apply OpenMP or Intel TBB for large vector parallelism  
 - 🧪 **Backtesting engine**: Build an event-based framework with slippage modeling  
 - 📊 **Python bridge**: Export signals to Python for matplotlib-based visualization  
+
+---
+
+## 📌 Planned Features
+
+The following extensions are planned or in progress:
+
+- [ ] Full backtesting module (PnL tracking, execution logic)
+- [ ] CSV loader for real historical data
+- [ ] Parameter sweeps for signal window optimization
+- [ ] Micro-benchmarking hooks and timing utilities
+- [ ] Python scripts for plotting and performance visualization
+- [ ] Parallelized backtest/strategy evaluation
