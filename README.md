@@ -1,1 +1,1 @@
-# Mometum-Strategy-Optimization-C-
+# Mometum-Strategy-Optimization-C++
