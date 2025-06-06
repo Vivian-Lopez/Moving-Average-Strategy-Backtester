@@ -7,8 +7,8 @@ int main()
     MomentumStrategy strategy(3, 5);
 
     double profit = 0.0;
-    int position = 0; // 1 for long, -1 for short, 0 for flat
-    double entry_price = 0.0;
+    int shares = 0; // can be negative if in a short position
+    double average_entry_price = 0.0;
     double last_price = 0.0;
 
     // For each price, feeds price to strategy.on_price(price) and handle signals:
@@ -17,31 +17,46 @@ int main()
     //    - If signal == 0, hold position
     load_prices_from_csv("../data/sample_data.csv", [&](double price)
                          {
-        last_price = price;
         int signal = strategy.on_price(price);
-        if (signal == 1 && position != 1) {
-            // Close short position if exists
-            if (position == -1) {
-                profit += entry_price - price;
+        if (signal == 1) {
+            // Shares can be negative so use absolute values where necessary
+            // Correctly calculate the profit using average entry price and price
+            if (shares >= 0) {
+                average_entry_price = ((average_entry_price * shares) + price) / (shares + 1);
+                ++shares;
+            } else {
+                // Closing a short position
+                double sold_shares_value = average_entry_price * -shares;
+                double equivalent_current_shares_value = price * -shares;
+                profit += sold_shares_value - equivalent_current_shares_value;
+                average_entry_price = 0;
+                shares = 0;
             }
-            position = 1;
-            entry_price = price;
-        } else if (signal == -1 && position != -1) {
-            if (position == 1) {
-                profit += price - entry_price;
+        } else if (signal == -1) {
+            if (shares < 0) {
+                average_entry_price = ((average_entry_price * -shares) + price) / (-shares + 1);
+                --shares;
+            } else {
+                // Closing a long position
+                profit += (shares * price) - (average_entry_price * shares);
+                average_entry_price = 0;
+                shares = 0;
             }
-            position = -1;
-            entry_price = price;
-        } });
+        } 
+        last_price = price;
+    });
 
     // Closing any open position at the last price
-    if (position == 1)
-    {
-        profit += last_price - entry_price;
-    }
-    else if (position == -1)
-    {
-        profit += entry_price - last_price;
+    if (shares < 0) {
+        double sold_shares_value = average_entry_price * -shares;
+        double equivalent_current_shares_value = last_price * -shares;
+        profit += sold_shares_value - equivalent_current_shares_value;
+        average_entry_price = 0;
+        shares = 0;
+    } else if (shares > 0) {
+        profit += (shares * last_price) - (average_entry_price * shares);
+        average_entry_price = 0;
+        shares = 0;
     }
 
     std::cout << "Total profit: " << profit << std::endl;
