@@ -9,6 +9,7 @@ include_directories(include)
 add_executable(momentum_strategy
     src/main.cpp
     src/strategy.cpp
+    src/csv_loader.cpp
 )
 
 # Google Test
