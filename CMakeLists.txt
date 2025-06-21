@@ -12,6 +12,10 @@ add_executable(momentum_strategy
     src/csv_loader.cpp
 )
 
+# pybind11
+find_package(pybind11 REQUIRED)
+pybind11_add_module(strategy_py src/bindings.cpp src/strategy.cpp src/csv_loader.cpp)
+
 # Google Test
 enable_testing()
 find_package(GTest REQUIRED)
