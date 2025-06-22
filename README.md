@@ -2,11 +2,12 @@
 
 An educational and performance-aware C++ implementation of a simple momentum-based trading strategy, structured for further development in:
 
-![image](https://github.com/user-attachments/assets/138b0a5e-9211-447a-9a74-608edcb49256)
-
 - ✅ Signal generation and testing  
 - ✅ Backtesting and analytics integration  
 - ✅ Profiling and low-level optimization
+
+# The Current UI:
+![image](https://github.com/user-attachments/assets/138b0a5e-9211-447a-9a74-608edcb49256)
 
 ---
 
