@@ -23,7 +23,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(pybind11)
 
-pybind11_add_module(strategy_py src/bindings.cpp src/strategy.cpp src/csv_loader.cpp)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python)
+
+pybind11_add_module(strategy_py
+    src/bindings.cpp
+    src/strategy.cpp
+    src/csv_loader.cpp
+)
 
 # === Google Test ===
 FetchContent_Declare(
