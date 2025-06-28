@@ -13,7 +13,16 @@ add_executable(momentum_strategy
 )
 
 # pybind11
-find_package(pybind11 REQUIRED)
+include(FetchContent)
+
+FetchContent_Declare(
+  pybind11
+  GIT_REPOSITORY https://github.com/pybind/pybind11.git
+  GIT_TAG        v2.12.0
+)
+
+FetchContent_MakeAvailable(pybind11)
+
 pybind11_add_module(strategy_py src/bindings.cpp src/strategy.cpp src/csv_loader.cpp)
 
 # Google Test
