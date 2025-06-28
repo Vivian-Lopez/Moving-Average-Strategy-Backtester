@@ -9,7 +9,7 @@ An educational and performance-aware C++ implementation of a simple momentum-bas
 Try out the live version here: https://trading-strategy-simulator-cpp.streamlit.app/
 
 # The Current UI:
-![image](https://github.com/user-attachments/assets/138b0a5e-9211-447a-9a74-608edcb49256)
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/d3b7f85d-4b09-4abc-977f-67677f54c6ec" />
 
 ---
 
