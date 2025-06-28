@@ -45,7 +45,7 @@ jobs:
 
       - name: Commit compiled .so
         run: |
-          git add python/strategy_py.so
+          git add python/strategy_py*.so
           git commit -m "Add compiled Linux .so file" || echo "No changes to commit"
 
       - name: Push back to repo
