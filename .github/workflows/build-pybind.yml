@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-linux-so:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout repo
@@ -33,6 +33,11 @@ jobs:
           cd build
           cmake ..
           make
+
+      - name: Rename compiled .so file in-place
+        run: |
+          so_file=$(find python -name 'strategy_py*.so' | head -n 1)
+          mv "$so_file" python/strategy_py.so
 
       - name: Configure Git
         run: |
