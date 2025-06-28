@@ -6,7 +6,10 @@ An educational and performance-aware C++ implementation of a simple momentum-bas
 - ✅ Backtesting and analytics integration  
 - ✅ Profiling and low-level optimization
 
+
 Try out the live version here: https://trading-strategy-simulator-cpp.streamlit.app/
+
+Frontend created with the Python Streamlit framework.
 
 # The Current UI:
 <img width="1440" alt="image" src="https://github.com/user-attachments/assets/d3b7f85d-4b09-4abc-977f-67677f54c6ec" />
