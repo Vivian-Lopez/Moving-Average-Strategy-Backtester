@@ -6,9 +6,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../buil
 
 # If strategy_py.so does not exist, run CMake and make
 if not os.path.exists(so_path):
-    build_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../build"))
+    this_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_root = os.path.abspath(os.path.join(this_dir, ".."))
+
+    build_dir = os.path.join(repo_root, "build")
     os.makedirs(build_dir, exist_ok=True)
-    subprocess.run(["cmake", ".."], cwd=build_dir, check=True)
+
+    subprocess.run(["cmake", repo_root], cwd=build_dir, check=True)
     subprocess.run(["make"], cwd=build_dir, check=True)
 
 import strategy_py
