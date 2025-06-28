@@ -1,6 +1,7 @@
 import streamlit as st
 import plotly.graph_objects as go
 from simulate import run_simulation
+import os
 
 st.title("📈 C++ Trading Strategy Simulator")
 
@@ -50,8 +51,11 @@ with col1:
         st.session_state['source_message'] = "✅ Custom file loaded."
 with col2:
     st.markdown("<div style='height: 35px'></div>", unsafe_allow_html=True)  # Precise spacer for alignment
-    if st.button("🗂️ Load Sample Data", key="load_sample", help="Use built-in sample data", use_container_width=True):
-        st.session_state['csv_path'] = "../data/sample_data.csv"
+    load_sample = st.button("🗂️ Load Sample Data", key="load_sample", help="Use built-in sample data", use_container_width=True)
+    if load_sample:
+        # Use path relative to this file for sample data
+        sample_path = os.path.join(os.path.dirname(__file__), "..", "data", "sample_data.csv")
+        st.session_state['csv_path'] = sample_path
         st.session_state['source_message'] = "✅ Sample data loaded."
 
 
