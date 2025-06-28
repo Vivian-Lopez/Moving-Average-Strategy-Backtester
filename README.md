@@ -18,7 +18,7 @@ Try out the live version here: https://trading-strategy-simulator-cpp.streamlit.
 This repo serves as a foundation to explore:
 
 - Implementation of fast, clean signal-generation logic in modern C++
-- Integration with Python for data visualization and analysis (optional)
+- Integration with Python for data visualization and analysis
 - Optimization of compute bottlenecks for large-scale backtests
 - Practical demonstration of production-grade design in a trading context
 
