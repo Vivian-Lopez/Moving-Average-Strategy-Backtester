@@ -16,12 +16,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Build .so inside Ubuntu 20.04 container with Python 3.11
+      - name: Build .so inside Ubuntu 22.04 container with Python 3.11
         run: |
-          docker run --rm -v ${{ github.workspace }}:/app -w /app ubuntu:20.04 /bin/bash -c "
+          docker run --rm -v ${{ github.workspace }}:/app -w /app ubuntu:22.04 /bin/bash -c "
             set -e &&
             apt update &&
-            apt install -y software-properties-common curl git cmake g++ python3.11 python3.11-dev python3.11-distutils &&
+            apt install -y curl git cmake g++ python3.11 python3.11-dev python3.11-distutils &&
             curl -sS https://bootstrap.pypa.io/get-pip.py | python3.11 &&
             python3.11 -m pip install pybind11 &&
             export CC=gcc &&
