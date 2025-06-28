@@ -44,14 +44,14 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-      - name: Pull latest changes
-        run: |
-          git pull origin main --rebase
-
       - name: Commit compiled .so
         run: |
-          git add python/strategy_py*.so
+          git add python/strategy_py.so
           git commit -m "Add compiled Linux .so file" || echo "No changes to commit"
+
+      - name: Pull latest changes
+        run: |
+          git pull origin main --rebase || echo "Skipping pull due to local changes"
 
       - name: Push back to repo
         run: git push origin main
