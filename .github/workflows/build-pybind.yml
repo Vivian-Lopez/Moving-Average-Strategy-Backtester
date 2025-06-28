@@ -10,45 +10,46 @@ on:
 
 jobs:
   build-linux-so:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04  # Compatible with Streamlit Cloud (glibc 2.31)
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build .so inside Ubuntu 20.04 container with Python 3.11
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies
         run: |
-          docker run --rm -v ${{ github.workspace }}:/app -w /app ubuntu:20.04 /bin/bash -c "
-            apt update &&
-            apt install -y software-properties-common &&
-            add-apt-repository ppa:deadsnakes/ppa -y &&
-            apt update &&
-            apt install -y python3.11 python3.11-dev python3.11-distutils python3-pip cmake g++ git &&
-            python3.11 -m pip install --upgrade pip &&
-            python3.11 -m pip install pybind11 &&
-            export CC=gcc &&
-            export CXX=g++ &&
-            mkdir -p build &&
-            cd build &&
-            cmake -DPYTHON_EXECUTABLE=$(which python3.11) .. &&
-            make &&
-            so_file=\$(find ../python -name 'strategy_py*.so' | head -n 1) &&
-            cp \$so_file ../python/strategy_py.so
-          "
+          sudo apt update
+          sudo apt install -y cmake g++ python3.11-dev python3.11-distutils
+
+      - name: Install pybind11
+        run: python3.11 -m pip install pybind11
+
+      - name: Build Pybind11 shared object
+        run: |
+          export CC=gcc
+          export CXX=g++
+          mkdir -p build
+          cd build
+          cmake -DPYTHON_EXECUTABLE=$(which python3.11) ..
+          make
+
+      - name: Rename and move .so file
+        run: |
+          so_file=$(find python -name 'strategy_py*.so' | head -n 1)
+          mv "$so_file" python/strategy_py.so
 
       - name: Configure Git
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-      - name: Commit compiled .so
+      - name: Commit and push compiled .so
         run: |
           git add python/strategy_py.so
-          git commit -m "Add compiled Linux .so file" || echo "No changes to commit"
-
-      - name: Pull latest changes
-        run: |
-          git pull origin main --rebase || echo "Skipping pull due to local changes"
-
-      - name: Push back to repo
-        run: git push origin main
+          git commit -m "Add compatible .so for Streamlit" || echo "No changes to commit"
+          git push origin main
