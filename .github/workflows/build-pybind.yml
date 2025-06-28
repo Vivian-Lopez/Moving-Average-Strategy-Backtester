@@ -19,18 +19,16 @@ jobs:
       - name: Build .so inside Ubuntu 20.04 container with Python 3.11
         run: |
           docker run --rm -v ${{ github.workspace }}:/app -w /app ubuntu:20.04 /bin/bash -c "
+            set -e &&
             apt update &&
-            apt install -y software-properties-common &&
-            add-apt-repository ppa:deadsnakes/ppa -y &&
-            apt update &&
-            apt install -y python3.11 python3.11-dev python3.11-distutils python3-pip cmake g++ git &&
-            python3.11 -m pip install --upgrade pip &&
+            apt install -y software-properties-common curl git cmake g++ python3.11 python3.11-dev python3.11-distutils &&
+            curl -sS https://bootstrap.pypa.io/get-pip.py | python3.11 &&
             python3.11 -m pip install pybind11 &&
             export CC=gcc &&
             export CXX=g++ &&
             mkdir -p build &&
             cd build &&
-            cmake -DPYTHON_EXECUTABLE=$(which python3.11) .. &&
+            cmake -DPYTHON_EXECUTABLE=\$(which python3.11) .. &&
             make &&
             so_file=\$(find ../python -name 'strategy_py*.so' | head -n 1) &&
             cp \$so_file ../python/strategy_py.so
