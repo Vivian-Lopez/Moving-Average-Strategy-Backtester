@@ -1,3 +1,21 @@
+import os
+import sys
+import subprocess
+
+# Absolute path to expected .so
+so_path = os.path.join(os.path.dirname(__file__), "strategy_py.so")
+
+# Build if it doesn't exist
+if not os.path.exists(so_path):
+    print("🔧 Building strategy_py.so...")
+    build_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "build"))
+    os.makedirs(build_dir, exist_ok=True)
+    subprocess.run(["cmake", ".."], cwd=build_dir, check=True)
+    subprocess.run(["make"], cwd=build_dir, check=True)
+
+# Add path and import
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
 import strategy_py
 import pandas as pd
 
