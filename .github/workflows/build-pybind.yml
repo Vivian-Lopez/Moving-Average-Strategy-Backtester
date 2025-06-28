@@ -34,11 +34,6 @@ jobs:
           cmake ..
           make
 
-      - name: Rename and move .so to python directory
-        run: |
-          so_file=$(find build -name 'strategy_py*.so' | head -n 1)
-          cp "$so_file" python/strategy_py.so
-
       - name: Configure Git
         run: |
           git config user.name github-actions
