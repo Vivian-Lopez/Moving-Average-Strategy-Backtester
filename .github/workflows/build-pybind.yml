@@ -16,15 +16,21 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Build .so inside Ubuntu 20.04 container
+      - name: Build .so inside Ubuntu 20.04 container with Python 3.11
         run: |
           docker run --rm -v ${{ github.workspace }}:/app -w /app ubuntu:20.04 /bin/bash -c "
             apt update &&
-            DEBIAN_FRONTEND=noninteractive apt install -y cmake g++ python3 python3-dev python3-pip git &&
-            pip3 install pybind11 &&
+            apt install -y software-properties-common &&
+            add-apt-repository ppa:deadsnakes/ppa -y &&
+            apt update &&
+            apt install -y python3.11 python3.11-dev python3.11-distutils python3-pip cmake g++ git &&
+            python3.11 -m pip install --upgrade pip &&
+            python3.11 -m pip install pybind11 &&
+            export CC=gcc &&
+            export CXX=g++ &&
             mkdir -p build &&
             cd build &&
-            cmake .. &&
+            cmake -DPYTHON_EXECUTABLE=$(which python3.11) .. &&
             make &&
             so_file=\$(find ../python -name 'strategy_py*.so' | head -n 1) &&
             cp \$so_file ../python/strategy_py.so
