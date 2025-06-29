@@ -4,6 +4,59 @@ from simulate import run_simulation
 import os
 import time
 
+# Add this at the top after imports
+st.markdown(
+    """
+    <style>
+    .frosted-panel {
+        background: rgba(24, 26, 31, 0.92); /* darker gray, more opaque */
+        border: 1.5px solid #35373e;
+        border-radius: 10px;
+        color: #23272f;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+        padding: 1.2rem 1.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.08rem;
+        transition: background 0.2s, color 0.2s;
+    }
+    .frosted-panel.monospace { font-family: monospace; font-size: 0.97rem; }
+    .frosted-panel.metrics-panel { display: block; padding: 1.5rem; }
+    .frosted-panel .metrics-title { text-align: center; margin-bottom: 1rem; font-size: 1.4rem; font-weight: 600; }
+    .frosted-panel .metrics-container { display: flex; justify-content: space-around; }
+    .frosted-panel .metric-item { text-align: center; }
+    .frosted-panel .metric-icon { font-size: 1.6rem; }
+    .frosted-panel .metric-label { font-size: 0.85rem; color: #a3aab3; }
+    .frosted-panel .metric-value { font-size: 1.3rem; font-weight: bold; }
+    .frosted-panel .chart-title {
+        font-size: 1.18rem;
+        font-weight: 800;
+        color: #c2c8f0;
+        margin-bottom: 0.5rem;
+        margin-top: 1.2rem;
+        letter-spacing: 0.01em;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+    @media (prefers-color-scheme: light) {
+        .frosted-panel {
+            background: rgba(246, 248, 250, 0.85);
+            color: #23272f;
+            border: 1.5px solid #e1e4e8;
+        }
+        .frosted-panel .metric-label { color: #555; }
+        .frosted-panel .chart-title {
+            color: #23234c;
+            text-shadow: none;
+            font-weight: 700;
+        }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Initialize session state keys if not present
 if 'csv_path' not in st.session_state:
     st.session_state['csv_path'] = None
@@ -18,7 +71,25 @@ st.title("📈 C++ Trading Strategy Simulator")
 st.sidebar.header("Strategy Settings")
 st.sidebar.markdown(
     """
-    <div style='background-color: #eafaf1; border: 1px solid #b7ebc6; border-radius: 6px; padding: 0.7rem; margin-bottom: 1.2rem; font-size: 0.98rem;'>
+    <style>
+    .sidebar-info {
+        background-color: #eafaf1;
+        border: 1px solid #b7ebc6;
+        border-radius: 6px;
+        padding: 0.7rem;
+        margin-bottom: 1.2rem;
+        font-size: 0.98rem;
+        color: #222;
+    }
+    @media (prefers-color-scheme: dark) {
+        .sidebar-info {
+            background-color: #2e3440 !important;
+            border: 1px solid #444851 !important;
+            color: #f3f6fa !important;
+        }
+    }
+    </style>
+    <div class="sidebar-info" data-testid="stSidebarContent">
     Adjust the <b>Short Window</b> and <b>Long Window</b> sliders below to test different strategy settings and see which window sizes give you the highest profit!
     </div>
     """,
@@ -30,7 +101,7 @@ long_window = st.sidebar.slider("Long Window", 1, 50, 11)
 # Info panel at the top
 st.markdown(
     """
-    <div style='background-color: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; font-size: 1.08rem;'>
+    <div class='frosted-panel'>
         <b>Welcome!</b> To get started, <b>upload your own CSV file</b> (see format preview below), or <b>load the sample data</b>.<br>
         Then, click <b>Run Simulation</b> to see your simple moving average strategy's profit and PnL over time.
     </div>
@@ -41,7 +112,7 @@ st.markdown(
 # Example CSV preview
 st.markdown(
     """
-    <div style='background-color: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 1rem; margin-bottom: 1.2rem; font-family: monospace; font-size: 0.97rem;'>
+    <div class="frosted-panel monospace">
     Timestamp,Price<br>
     100000001,101.5<br>
     100000002,101.7<br>
@@ -93,7 +164,11 @@ with col1:
 
 # Show which data source is active (lowkey)
 if st.session_state['source_message']:
-    st.markdown(f"<div style='background-color: #f6f8fa; color: #222; border: 1px solid #e1e4e8; border-radius: 5px; padding: 0.5rem 1rem; font-size: 1rem; margin-bottom: 0.7rem;'>{st.session_state['source_message']}</div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="frosted-panel" style="padding: 0.5rem 1rem; font-size: 1rem; margin-bottom: 0.7rem;">
+        {st.session_state['source_message']}
+    </div>
+    """, unsafe_allow_html=True)
 
 # --- Run Simulation Button ---
 run_disabled = st.session_state['csv_path'] is None
@@ -108,25 +183,25 @@ if run_btn and st.session_state['csv_path']:
     # Display metrics in a styled, emoji-rich panel
     st.markdown(
         f'''
-<div style="background:#fff; border:1px solid #e1e4e8; border-radius:10px; padding:1.5rem; margin-bottom:2rem; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
-  <div style="text-align:center; margin-bottom:1rem;">
-    <span style="font-size:1.4rem; font-weight:600;">🏁 Simulation Complete!</span>
+<div class="frosted-panel metrics-panel">
+  <div class="metrics-title">
+    🏁 Simulation Complete!
   </div>
-  <div style="display:flex; justify-content:space-around;">
-    <div style="text-align:center;">
-      <div style="font-size:1.6rem;">💰</div>
-      <div style="font-size:0.85rem; color:#555;">Total Profit</div>
-      <div style="font-size:1.3rem; font-weight:bold;">${profit:.2f}</div>
+  <div class="metrics-container">
+    <div class="metric-item">
+      <div class="metric-icon">💰</div>
+      <div class="metric-label">Total Profit</div>
+      <div class="metric-value">${profit:.2f}</div>
     </div>
-    <div style="text-align:center;">
-      <div style="font-size:1.6rem;">⏱️</div>
-      <div style="font-size:0.85rem; color:#555;">Runtime</div>
-      <div style="font-size:1.3rem; font-weight:bold;">{elapsed:.2f}s</div>
+    <div class="metric-item">
+      <div class="metric-icon">⏱️</div>
+      <div class="metric-label">Runtime</div>
+      <div class="metric-value">{elapsed:.2f}s</div>
     </div>
-    <div style="text-align:center;">
-      <div style="font-size:1.6rem;">📊</div>
-      <div style="font-size:0.85rem; color:#555;">Data Points</div>
-      <div style="font-size:1.3rem; font-weight:bold;">{len(df)}</div>
+    <div class="metric-item">
+      <div class="metric-icon">📊</div>
+      <div class="metric-label">Data Points</div>
+      <div class="metric-value">{len(df)}</div>
     </div>
   </div>
 </div>
@@ -139,7 +214,23 @@ if run_btn and st.session_state['csv_path']:
     # Add a chart title above the plot
     st.markdown(
         """
-        <div style='font-size: 1.1rem; font-weight: 700; color: #23234c; margin-bottom: 0.5rem; margin-top: 1.2rem;'>
+        <style>
+        @media (prefers-color-scheme: dark) {
+            .chart-title, .chart-title * {
+                color: #fff !important;
+                font-weight: 900 !important;
+                text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+            }
+        }
+        @media (prefers-color-scheme: light) {
+            .chart-title {
+                color: #23234c !important;
+                font-weight: 700;
+                text-shadow: none;
+            }
+        }
+        </style>
+        <div class="chart-title" style="background: none; border: none; box-shadow: none; padding: 0; margin-bottom: 0.5rem; margin-top: 1.2rem; font-size: 1.18rem; font-weight: 900; display: flex; align-items: center; gap: 0.5em; letter-spacing: 0.01em;">
             📈 Price & PnL Over Time
         </div>
         """,
@@ -147,10 +238,25 @@ if run_btn and st.session_state['csv_path']:
     )
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(y=df['Price'], mode='lines', name='Price'))
-    fig.add_trace(go.Scatter(y=df['PnL'], mode='lines', name='PnL'))
+    fig.add_trace(go.Scatter(y=df['Price'], mode='lines', name='Price', line=dict(width=2)))
+    fig.add_trace(go.Scatter(y=df['PnL'], mode='lines', name='PnL', line=dict(width=2)))
+    
+    # Create dark mode compatible chart
     fig.update_layout(
         xaxis_title='Time',
-        yaxis_title='Value ($)'
+        yaxis_title='Value ($)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color='#f3f6fa'),
+        xaxis=dict(
+            gridcolor='rgba(80,80,80,0.2)',
+            zerolinecolor='rgba(80,80,80,0.2)'
+        ),
+        yaxis=dict(
+            gridcolor='rgba(80,80,80,0.2)',
+            zerolinecolor='rgba(80,80,80,0.2)'
+        ),
+        margin=dict(l=10, r=10, t=10, b=10)
     )
+    
     st.plotly_chart(fig, use_container_width=True)
