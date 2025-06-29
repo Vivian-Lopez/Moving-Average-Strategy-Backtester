@@ -5,3 +5,4 @@ strategy_py
 python/*.so
 python/*.csv
 python/*.pyc
+python/uploaded_data.csv
