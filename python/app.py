@@ -1,4 +1,26 @@
 import streamlit as st
+# Set Streamlit to wide mode and default to light mode
+st.set_page_config(layout="wide")
+
+# Force light mode by overriding prefers-color-scheme
+st.markdown(
+    """
+    <style>
+    html, body, [data-testid="stAppViewContainer"] {
+        color-scheme: light !important;
+        background: #fff !important;
+    }
+    @media (prefers-color-scheme: dark) {
+        html, body, [data-testid="stAppViewContainer"] {
+            color-scheme: light !important;
+            background: #fff !important;
+        }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 import plotly.graph_objects as go
 from simulate import run_simulation
 import os
