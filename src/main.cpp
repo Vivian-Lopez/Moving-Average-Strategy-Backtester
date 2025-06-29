@@ -43,17 +43,19 @@ int main()
                 shares = 0;
             }
         } 
-        last_price = price;
-    });
+        last_price = price; });
 
     // Closing any open position at the last price
-    if (shares < 0) {
+    if (shares < 0)
+    {
         double sold_shares_value = average_entry_price * -shares;
         double equivalent_current_shares_value = last_price * -shares;
         profit += sold_shares_value - equivalent_current_shares_value;
         average_entry_price = 0;
         shares = 0;
-    } else if (shares > 0) {
+    }
+    else if (shares > 0)
+    {
         profit += (shares * last_price) - (average_entry_price * shares);
         average_entry_price = 0;
         shares = 0;

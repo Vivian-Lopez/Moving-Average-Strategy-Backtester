@@ -1,6 +1,5 @@
 #include "strategy.hpp"
 
-// Defining the constructore for the class which was declared in the header file here
 MomentumStrategy::MomentumStrategy(int short_window, int long_window) 
     : short_window_(short_window),
         long_window_(long_window),
