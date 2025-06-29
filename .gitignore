@@ -6,3 +6,4 @@ python/*.so
 python/*.csv
 python/*.pyc
 python/uploaded_data.csv
+python/__pycache__/simulate.cpython-311.pyc
