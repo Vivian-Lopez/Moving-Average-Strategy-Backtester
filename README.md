@@ -12,7 +12,8 @@ Try out the live version here: https://trading-strategy-simulator-cpp.streamlit.
 Frontend created with the Python Streamlit framework.
 
 # The Current UI:
-<img width="1440" alt="image" src="https://github.com/user-attachments/assets/d3b7f85d-4b09-4abc-977f-67677f54c6ec" />
+![image](https://github.com/user-attachments/assets/08bfb3d4-3c33-4050-a37c-063c75212771)
+
 
 ---
 
