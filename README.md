@@ -13,7 +13,7 @@ Frontend created with the Python Streamlit framework.
 
 # The Current UI:
 ![image](https://github.com/user-attachments/assets/08bfb3d4-3c33-4050-a37c-063c75212771)
-
+A nice dark mode is coming soon... :)
 
 ---
 
