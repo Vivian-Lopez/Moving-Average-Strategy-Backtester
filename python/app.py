@@ -25,7 +25,7 @@ st.sidebar.markdown(
     unsafe_allow_html=True
 )
 short_window = st.sidebar.slider("Short Window", 1, 20, 3)
-long_window = st.sidebar.slider("Long Window", 1, 50, 5)
+long_window = st.sidebar.slider("Long Window", 1, 50, 11)
 
 # Info panel at the top
 st.markdown(
@@ -70,7 +70,7 @@ with col2:
     st.markdown("</div>", unsafe_allow_html=True)
     if load_sample:
         sample_path = os.path.join(
-            os.path.dirname(__file__), "..", "data", "Volatile_Price_Data.csv"
+            os.path.dirname(__file__), "..", "data", "more_volatile_prices.csv"
         )
         st.session_state['csv_path'] = sample_path
         st.session_state['source_message'] = "✅ Sample data loaded."
