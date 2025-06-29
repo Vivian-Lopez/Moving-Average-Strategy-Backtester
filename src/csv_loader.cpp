@@ -2,6 +2,13 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <string>
+#include <algorithm>
+#include <cctype>
+
+bool contains_digit(const std::string& s) {
+    return std::any_of(s.begin(), s.end(), ::isdigit);
+}
 
 void load_prices_from_csv(const std::string& filepath, const std::function<void(double)>& callback) {
     std::ifstream file(filepath);
@@ -11,13 +18,17 @@ void load_prices_from_csv(const std::string& filepath, const std::function<void(
 
     std::string line;
     while (std::getline(file, line)) {
-
+        
         std::istringstream iss(line);
+        
         std::string token;
         if (!std::getline(iss, token, ',')) continue;
         std::string timestamp = token;
-
+        
         if (!std::getline(iss, token, ',')) continue;
+        
+        // Skip Getting headers if present
+        if (!contains_digit(timestamp)) continue;
 
         double price;
         try {
