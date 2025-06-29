@@ -42,7 +42,7 @@ st.markdown(
 col1, col2 = st.columns([3, 1], gap="medium")
 
 with col1:
-    uploaded_file = st.file_uploader("", type="csv", key="file_uploader")
+    uploaded_file = st.file_uploader("file", type="csv", key="file_uploader")
     if uploaded_file is not None:
         csv_path = "uploaded_data.csv"
         with open(csv_path, "wb") as f:
