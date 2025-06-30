@@ -1,25 +1,6 @@
 import streamlit as st
-# Set Streamlit to wide mode and default to light mode
+# Set Streamlit to wide mode
 st.set_page_config(layout="wide")
-
-# Force light mode by overriding prefers-color-scheme
-st.markdown(
-    """
-    <style>
-    html, body, [data-testid="stAppViewContainer"] {
-        color-scheme: light !important;
-        background: #fff !important;
-    }
-    @media (prefers-color-scheme: dark) {
-        html, body, [data-testid="stAppViewContainer"] {
-            color-scheme: light !important;
-            background: #fff !important;
-        }
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 import plotly.graph_objects as go
 from simulate import run_simulation
@@ -31,10 +12,10 @@ st.markdown(
     """
     <style>
     .frosted-panel {
-        background: rgba(24, 26, 31, 0.92); /* darker gray, more opaque */
-        border: 1.5px solid #35373e;
-        border-radius: 10px;
+        background: rgba(246, 248, 250, 0.85);
         color: #23272f;
+        border: 1.5px solid #e1e4e8;
+        border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.13);
         padding: 1.2rem 1.5rem;
         margin-bottom: 1.5rem;
@@ -47,32 +28,28 @@ st.markdown(
     .frosted-panel .metrics-container { display: flex; justify-content: space-around; }
     .frosted-panel .metric-item { text-align: center; }
     .frosted-panel .metric-icon { font-size: 1.6rem; }
-    .frosted-panel .metric-label { font-size: 0.85rem; color: #a3aab3; }
+    .frosted-panel .metric-label { font-size: 0.85rem; color: #555; }
     .frosted-panel .metric-value { font-size: 1.3rem; font-weight: bold; }
     .frosted-panel .chart-title {
         font-size: 1.18rem;
-        font-weight: 800;
-        color: #c2c8f0;
+        font-weight: 700;
+        color: #23234c;
         margin-bottom: 0.5rem;
         margin-top: 1.2rem;
         letter-spacing: 0.01em;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        text-shadow: none;
         display: flex;
         align-items: center;
         gap: 0.5em;
     }
-    @media (prefers-color-scheme: light) {
-        .frosted-panel {
-            background: rgba(246, 248, 250, 0.85);
-            color: #23272f;
-            border: 1.5px solid #e1e4e8;
-        }
-        .frosted-panel .metric-label { color: #555; }
-        .frosted-panel .chart-title {
-            color: #23234c;
-            text-shadow: none;
-            font-weight: 700;
-        }
+    .sidebar-info {
+        background-color: #eafaf1;
+        border: 1px solid #b7ebc6;
+        border-radius: 6px;
+        padding: 0.7rem;
+        margin-bottom: 1.2rem;
+        font-size: 0.98rem;
+        color: #222;
     }
     </style>
     """,
@@ -102,13 +79,6 @@ st.sidebar.markdown(
         margin-bottom: 1.2rem;
         font-size: 0.98rem;
         color: #222;
-    }
-    @media (prefers-color-scheme: dark) {
-        .sidebar-info {
-            background-color: #2e3440 !important;
-            border: 1px solid #444851 !important;
-            color: #f3f6fa !important;
-        }
     }
     </style>
     <div class="sidebar-info" data-testid="stSidebarContent">
@@ -198,9 +168,7 @@ run_btn = st.button("🚀 Run Simulation", disabled=run_disabled, use_container_
 
 if run_btn and st.session_state['csv_path']:
     with st.spinner("Running strategy..."):
-        start_time = time.time()
-        df, profit = run_simulation(st.session_state['csv_path'], short_window, long_window)
-        elapsed = time.time() - start_time
+        df, profit, avg_on_price_us, total_us = run_simulation(st.session_state['csv_path'], short_window, long_window)
 
     # Display metrics in a styled, emoji-rich panel
     st.markdown(
@@ -217,8 +185,13 @@ if run_btn and st.session_state['csv_path']:
     </div>
     <div class="metric-item">
       <div class="metric-icon">⏱️</div>
-      <div class="metric-label">Runtime</div>
-      <div class="metric-value">{elapsed:.2f}s</div>
+      <div class="metric-label">Total Runtime</div>
+      <div class="metric-value">{total_us:.2f} ms</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-icon">⚡</div>
+      <div class="metric-label">Avg on_price()</div>
+      <div class="metric-value">{avg_on_price_us:.2f} μs</div>
     </div>
     <div class="metric-item">
       <div class="metric-icon">📊</div>
@@ -237,22 +210,13 @@ if run_btn and st.session_state['csv_path']:
     st.markdown(
         """
         <style>
-        @media (prefers-color-scheme: dark) {
-            .chart-title, .chart-title * {
-                color: #fff !important;
-                font-weight: 900 !important;
-                text-shadow: 0 2px 8px rgba(0,0,0,0.18);
-            }
-        }
-        @media (prefers-color-scheme: light) {
-            .chart-title {
-                color: #23234c !important;
-                font-weight: 700;
-                text-shadow: none;
-            }
+        .chart-title, .chart-title * {
+            color: #23234c !important;
+            font-weight: 700 !important;
+            text-shadow: none;
         }
         </style>
-        <div class="chart-title" style="background: none; border: none; box-shadow: none; padding: 0; margin-bottom: 0.5rem; margin-top: 1.2rem; font-size: 1.18rem; font-weight: 900; display: flex; align-items: center; gap: 0.5em; letter-spacing: 0.01em;">
+        <div class="chart-title" style="background: none; border: none; box-shadow: none; padding: 0; margin-bottom: 0.5rem; margin-top: 1.2rem; font-size: 1.18rem; font-weight: 700; display: flex; align-items: center; gap: 0.5em; letter-spacing: 0.01em;">
             📈 Price & PnL Over Time
         </div>
         """,
@@ -263,20 +227,20 @@ if run_btn and st.session_state['csv_path']:
     fig.add_trace(go.Scatter(y=df['Price'], mode='lines', name='Price', line=dict(width=2)))
     fig.add_trace(go.Scatter(y=df['PnL'], mode='lines', name='PnL', line=dict(width=2)))
     
-    # Create dark mode compatible chart
+    # Create light mode compatible chart
     fig.update_layout(
         xaxis_title='Time',
         yaxis_title='Value ($)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#f3f6fa'),
+        paper_bgcolor='rgba(255,255,255,1)',
+        plot_bgcolor='rgba(255,255,255,1)',
+        font=dict(color='#23272f'),
         xaxis=dict(
-            gridcolor='rgba(80,80,80,0.2)',
-            zerolinecolor='rgba(80,80,80,0.2)'
+            gridcolor='rgba(200,200,200,0.5)',
+            zerolinecolor='rgba(200,200,200,0.5)'
         ),
         yaxis=dict(
-            gridcolor='rgba(80,80,80,0.2)',
-            zerolinecolor='rgba(80,80,80,0.2)'
+            gridcolor='rgba(200,200,200,0.5)',
+            zerolinecolor='rgba(200,200,200,0.5)'
         ),
         margin=dict(l=10, r=10, t=10, b=10)
     )

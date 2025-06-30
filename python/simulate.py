@@ -20,7 +20,7 @@ import strategy_py
 import pandas as pd
 
 def run_simulation(csv_path, short_window=3, long_window=5):
-    pnl_curve, total_profit = strategy_py.run_strategy(csv_path, short_window, long_window)
+    pnl_curve, total_profit, avg_on_price_us, total_us = strategy_py.run_strategy(csv_path, short_window, long_window)
     df = pd.read_csv(csv_path)
     df['PnL'] = pnl_curve
-    return df, total_profit
+    return df, total_profit, avg_on_price_us, total_us

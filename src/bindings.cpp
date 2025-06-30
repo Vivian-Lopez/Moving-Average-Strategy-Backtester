@@ -2,11 +2,13 @@
 #include <pybind11/stl.h>
 #include "strategy.hpp"
 #include "csv_loader.hpp"
+#include <chrono>
 
 namespace py = pybind11;
 
 auto run_strategy(const std::string filepath, int short_window, int long_window)
 {
+    auto start_total = std::chrono::high_resolution_clock::now();
     MomentumStrategy strategy(short_window, long_window);
     std::vector<double> pnl_curve;
     double profit = 0.0;
@@ -14,9 +16,15 @@ auto run_strategy(const std::string filepath, int short_window, int long_window)
     double avg_entry = 0.0;
     double last_price = 0.0;
 
+    double on_price_us = 0.0;
+    int on_price_calls = 0;
     load_prices_from_csv(filepath, [&](double price)
                          {
+        auto t1 = std::chrono::high_resolution_clock::now();
         int signal = strategy.on_price(price);
+        auto t2 = std::chrono::high_resolution_clock::now();
+        on_price_us += std::chrono::duration<double, std::micro>(t2 - t1).count();
+        ++on_price_calls;
         if (signal == 1) {
             if (shares >= 0) {
                 avg_entry = ((avg_entry * shares) + price) / (shares + 1);
@@ -40,13 +48,17 @@ auto run_strategy(const std::string filepath, int short_window, int long_window)
         }
         pnl_curve.push_back(profit);
         last_price = price; });
+    double avg_on_price_us = on_price_calls > 0 ? on_price_us / on_price_calls : 0.0;
 
     if (shares > 0)
         profit += (last_price - avg_entry) * shares;
     else if (shares < 0)
         profit += (avg_entry - last_price) * -shares;
 
-    return std::make_pair(pnl_curve, profit);
+    auto end_total = std::chrono::high_resolution_clock::now();
+    double total_ms = std::chrono::duration<double, std::milli>(end_total - start_total).count();
+
+    return std::make_tuple(pnl_curve, profit, avg_on_price_us, total_ms);
 }
 
 PYBIND11_MODULE(strategy_py, m)
