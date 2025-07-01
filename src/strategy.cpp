@@ -1,3 +1,4 @@
+// strategy.cpp - MomentumStrategy implementation
 #include "strategy.hpp"
 
 MomentumStrategy::MomentumStrategy(int short_window, int long_window) 
