@@ -1,4 +1,4 @@
-# Momentum-Strategy-Optimization-C++
+# Moving-Average-Strategy-Optimization
 
 An educational and performance-aware C++ implementation of a simple momentum-based trading strategy, structured for further development in:
 
