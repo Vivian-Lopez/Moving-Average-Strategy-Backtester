@@ -1,6 +1,6 @@
 # Moving-Average-Strategy-Optimization
 
-An educational and performance-aware C++ implementation of a simple momentum-based trading strategy, structured for further development in:
+An educational and performance-aware C++ implementation of a simple moving average trading strategy, structured for further development in:
 
 - ✅ Signal generation and testing  
 - ✅ Backtesting and analytics integration  
