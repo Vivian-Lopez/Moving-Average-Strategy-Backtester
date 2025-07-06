@@ -12,8 +12,11 @@ Try out the live version here: https://trading-strategy-simulator-cpp.streamlit.
 Frontend created with the Python Streamlit framework.
 
 # The Current UI:
-![image](https://github.com/user-attachments/assets/08bfb3d4-3c33-4050-a37c-063c75212771)
-A nice dark mode is coming soon... :)
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/e08cfbf9-9334-43fe-8e38-6cf9ce5b3094" />
+
+<img width="1438" alt="image" src="https://github.com/user-attachments/assets/91ba8ab1-8d1a-4e68-9203-4f7bb3822b95" />
+
+(Enhanced Dark Mode coming soon)
 
 ---
 
