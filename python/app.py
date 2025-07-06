@@ -64,7 +64,7 @@ if 'source_message' not in st.session_state:
 if 'uploader_seed' not in st.session_state:
     st.session_state['uploader_seed'] = 0
 
-st.title("📈 C++ Trading Strategy Simulator")
+st.title("📈 Moving Average Strategy Backtester")
 
 # Place sidebar controls before main UI so short_window and long_window are defined
 st.sidebar.header("Strategy Settings")
