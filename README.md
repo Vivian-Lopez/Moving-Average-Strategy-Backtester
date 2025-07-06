@@ -1,4 +1,4 @@
-# Moving-Average-Strategy-Optimization
+# Moving-Average-Strategy-Backtester
 
 A performance-aware Python and C++ implementation of a simple moving average trading strategy as well as backtesting app, structured for further development in:
 
