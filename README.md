@@ -1,21 +1,16 @@
 # Moving-Average-Strategy-Optimization
 
-An educational and performance-aware Python and C++ implementation of a simple moving average trading strategy, structured for further development in:
+A performance-aware Python and C++ implementation of a simple moving average trading strategy as well as backtesting app, structured for further development in:
 
-- ✅ Signal generation and testing  
-- ✅ Backtesting and analytics integration  
-- ✅ Profiling and low-level optimization
-
+- Signal generation and testing  
+- Backtesting and analytics integration  
+- Profiling and low-level optimization
 
 Try out the live version here: https://trading-strategy-simulator-cpp.streamlit.app/
 
-Frontend created with the Python Streamlit framework.
-
 # The Current UI:
 <img width="1440" alt="image" src="https://github.com/user-attachments/assets/e08cfbf9-9334-43fe-8e38-6cf9ce5b3094" />
-
 <img width="1438" alt="image" src="https://github.com/user-attachments/assets/91ba8ab1-8d1a-4e68-9203-4f7bb3822b95" />
-
 (Enhanced Dark Mode coming soon)
 
 ---
@@ -27,7 +22,6 @@ This repo serves as a foundation to explore:
 - Implementation of fast, clean signal-generation logic in modern C++
 - Integration with Python for data visualization and analysis
 - Optimization of compute bottlenecks for large-scale backtests
-- Practical demonstration of production-grade design in a trading context
 
 ---
 
@@ -49,6 +43,7 @@ Signals are generated from historical price vectors and can be used to simulate 
 momentum-strategy-optimization-cpp/
 ├── data/            # Sample price data (CSV)
 ├── include/         # Strategy function declarations (headers)
+├── python/          # Streamlit frontend and simulation code 
 ├── src/             # Core strategy logic (C++)
 ├── tests/           # Unit tests using Google Test
 ├── CMakeLists.txt   # Build system definition
@@ -64,20 +59,14 @@ momentum-strategy-optimization-cpp/
 - C++17 or later
 - CMake ≥ 3.16
 - GoogleTest (`brew install googletest` on macOS)
+- Python3
+- Streamlit
 
-### Build
-
-```bash
-mkdir build && cd build
-cmake ..
-make
-```
-
-### Run
+### Run (Build is done dynamicaly during run in simulate.py)
 
 ```bash
-./momentum_strategy
-./strategy_test  # Run unit tests
+cd ./python
+streamlit run app.py
 ```
 
 ---
@@ -89,27 +78,19 @@ Unit tests in `tests/strategy_test.cpp` validate:
 - Correct signal vector sizing and alignment
 - Proper handling of flat and rising markets
 - Signal generation at crossover points
-- Structure for backtesting tests (coming soon)
 
 ---
 
 ## 🔬 Optimization Plan
 
 - ⏱️ **Benchmarking**: Integrate [Google Benchmark](https://github.com/google/benchmark) to measure performance  
-- 🧠 **Profiling**: Use `Instruments`, `perf`, or `valgrind` to analyze hotspots  
 - 🧵 **Multithreading**: Apply OpenMP or Intel TBB for large vector parallelism  
 - 🧪 **Backtesting engine**: Build an event-based framework with slippage modeling  
-- 📊 **Python bridge**: Export signals to Python for matplotlib-based visualization  
 
 ---
 
 ## 📌 Planned Features
 
 The following extensions are planned or in progress:
-
-- [ ] Full backtesting module (PnL tracking, execution logic)
-- [ ] CSV loader for real historical data
-- [ ] Parameter sweeps for signal window optimization
-- [ ] Micro-benchmarking hooks and timing utilities
-- [ ] Python scripts for plotting and performance visualization
 - [ ] Parallelized backtest/strategy evaluation
+- [ ] Realtime connection and visualisation to frontend tick-by-tick
